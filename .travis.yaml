@@ -2,7 +2,9 @@ sudo: required
 services:
         - docker
 before_install:
+        - gem install bundler
         - docker build -t manikanta513/client -f ./client/Dockerfile.dev
+         
 
 
 script:
