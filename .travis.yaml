@@ -1,0 +1,24 @@
+sudo: required
+services:
+        - docker
+before_install:
+        - docker build -t manikanta513/client -f ./client/Dockerfile.dev
+
+
+script:
+        - docker run manikanta513/client npm test -- -- coverage
+
+
+after_success:
+        - docker build -t manikanta513/multi-client -f ./client/
+        - docker build -t manikanta513/multi-nginx -f ./nginx
+        - docker build -t manikanta513/multi-server -f ./server
+        - docker build -t manikanta513/multi-worker -f ./worker
+
+# log in credentials of docker_hub
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+        - docker push manikanta513/multi-client
+        - docker push manikanta513/multi-nginx
+        - docker push manikanta513/multi-server
+        - docker push manikanta513/multi-worker
+
