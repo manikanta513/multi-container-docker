@@ -3,19 +3,19 @@ services:
         - docker
 before_install:
         
-        - docker build -t manikanta513/client -f ./client/Dockerfile.dev
+        - docker build -t manikanta513/client -f ./client/Dockerfile.dev ./client
          
 
 
 script:
-        - docker run manikanta513/client run npm test -- -- coverage
+        - docker run manikanta513/client npm test -- -- coverage
 
 
 after_success:
-        - docker build -t manikanta513/multi-client -f ./client/
-        - docker build -t manikanta513/multi-nginx -f ./nginx
-        - docker build -t manikanta513/multi-server -f ./server
-        - docker build -t manikanta513/multi-worker -f ./worker
+        - docker build -t manikanta513/multi-client  ./client/
+        - docker build -t manikanta513/multi-nginx  ./nginx
+        - docker build -t manikanta513/multi-server  ./server
+        - docker build -t manikanta513/multi-worker  ./worker
 
 # log in credentials of docker_hub
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
